@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:PulsooximeterApp;assembly=PulsooximeterApp"
+             xmlns:model="clr-namespace:PulsooximeterApp.ViewModels"
+             mc:Ignorable="d"
+             x:Class="PulsooximeterApp.Views.PulsePage"
+             Title="Detail">
+    <ContentPage.BindingContext>
+        <model:PulseViewModel />
+    </ContentPage.BindingContext>
+    <StackLayout Padding="10">
+        <Image Source="{local:ImageResource PulsooximeterApp.ic_heart.png}"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Text="HR:"
+               Grid.Row="1"
+               HorizontalOptions="End"
+               VerticalOptions="Center" />
+            <Label 
+               Grid.Row="1"
+               Grid.Column="1"
+               d:Text="120 BPM"
+               Text="{Binding HeartRate, StringFormat='{0:F0} BPM'}"
+               HorizontalOptions="Start"
+               VerticalOptions="Center" />
+            <Label Grid.Row="2"
+               Text="SpO2:"
+               HorizontalOptions="End"
+               VerticalOptions="Center" />
+            <Label Grid.Row="2"
+               Grid.Column="1"
+               d:Text="98%"
+                   Text="{Binding SpO2, StringFormat='{0:F0}%'}"
+               HorizontalOptions="Start"
+               VerticalOptions="Center" />
+        </Grid>
+            
+    </StackLayout>
+</ContentPage>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:PulsooximeterApp;assembly=PulsooximeterApp"
+             mc:Ignorable="d"
+             x:Class="PulsooximeterApp.Views.MainPageDetail"
+             Title="Detail">
+    <StackLayout Padding="10">
+        <Image Source="{local:ImageResource PulsooximeterApp.ic_heart.png}"/>
+        <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+            Aplikacja do obługi pulsooksymetru
+        </Label>
+        <Label HorizontalOptions="Center" VerticalOptions="End" Padding="40">
+            Autorzy:
+    Michael Czuba
+    Adrianna Siwik
+        </Label>
+    </StackLayout>
+</ContentPage>
