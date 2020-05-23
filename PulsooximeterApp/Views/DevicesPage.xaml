@@ -3,10 +3,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:PulsooximeterApp;assembly=PulsooximeterApp"
+             xmlns:model="clr-namespace:PulsooximeterApp.ViewModels"
              mc:Ignorable="d"
              x:Class="PulsooximeterApp.Views.DevicesPage"
              Title="Detail">
+    <ContentPage.BindingContext>
+        <model:DevicesViewModel />
+    </ContentPage.BindingContext>
+    
   <StackLayout Padding="10">
-    <Label Text="This is a detail page. To get the 'triple' line icon on each platform add a icon to each platform and update the 'Master' page with an Icon that references it."/>
-  </StackLayout>
+        <ListView x:Name="MenuItemsListView"
+              SeparatorVisibility="None"
+              HasUnevenRows="true"
+              ItemsSource="{Binding ListOfDevices}"
+              SelectedItem="{Binding SelectedBthDevice, Mode=TwoWay}">
+              
+            <d:ListView.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Urządzenie #1</x:String>
+                    <x:String>Urządzenie #2</x:String>
+                </x:Array>
+            </d:ListView.ItemsSource>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="15,10" HorizontalOptions="FillAndExpand">
+                            <Label VerticalOptions="FillAndExpand" 
+                    VerticalTextAlignment="Center" 
+                    Text="{Binding .}" 
+                    d:Text="{Binding .}"
+                    FontSize="24"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button 
+            HorizontalOptions="CenterAndExpand" 
+            VerticalOptions="EndAndExpand"
+            Command="{Binding SearchDevices}"
+            WidthRequest="200"
+            Text="Odśwież"/>
+    </StackLayout>
 </ContentPage>

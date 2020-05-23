@@ -12,10 +12,10 @@
         <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
             Aplikacja do obługi pulsooksymetru
         </Label>
-        <Label HorizontalOptions="Center" VerticalOptions="End" Padding="40">
-            Autorzy:
-    Michael Czuba
-    Adrianna Siwik
+        <Label HorizontalOptions="Center" VerticalOptions="End" Padding="40" HorizontalTextAlignment="Center">
+Autorzy
+Michael Czuba
+Adrianna Siwik
         </Label>
     </StackLayout>
 </ContentPage>

@@ -13,19 +13,28 @@ namespace PulsooximeterApp.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected PulseModel Model;
-
-        public int HeartRate { get => Model.Heartrate; protected set => Model.Heartrate=value; }
-        public int SpO2 { get => Model.SpO2; protected set => Model.SpO2 = value; }
+        public string HeartRate { get; set; } = "0";
+        public string SpO2 { get; set; } = "0";
 
         public PulseViewModel()
         {
-            Model = new PulseModel() { Heartrate = 0, SpO2 = 0 };
+            Device.StartTimer(TimeSpan.FromSeconds(2), OnUpdateModel);
+
         }
 
-        public void UpdateModel( PulseModel model )
+        public bool OnUpdateModel()
         {
-            Model = model;
+            try
+            {
+                var data = DependencyService.Get<IBth>().Read();
+                HeartRate = data;
+            }
+            catch (Exception ex)
+            {
+                Application.Current.MainPage.DisplayAlert("Attention", ex.Message, "Ok");
+            }
+
+            return true;
         }
 
         protected void OnPropertyChanges(string propertyName)
