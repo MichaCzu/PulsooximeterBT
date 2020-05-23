@@ -22,6 +22,7 @@ namespace PulsooximeterApp.Droid.BlueTooth
         public string LastReceivedData { get; set; }
         BluetoothSocket bthSocket = null;
         public bool IsConnected() { return bthSocket != null ? bthSocket.IsConnected : false; }
+        public string ConnectedDevice() { return bthSocket != null ? bthSocket.RemoteDevice.Name : null; }
 
 
         public Bth()
@@ -31,6 +32,8 @@ namespace PulsooximeterApp.Droid.BlueTooth
 
         public void Connect(string name)
         {
+            if (IsConnected())
+                Disconnect();
             Task.Run(async () => ConnectDevice(name));
         }
         public void Disconnect()

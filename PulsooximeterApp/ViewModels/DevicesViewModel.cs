@@ -36,7 +36,8 @@ namespace PulsooximeterApp.ViewModels
 
         public DevicesViewModel()
         {
-            SelectedBthDevice = DependencyService.Get<IBth>().
+            GetPairedDevices();
+            SelectedBthDevice = DependencyService.Get<IBth>().ConnectedDevice();
 
             SearchDevices = new Command(() =>
             {
@@ -62,7 +63,8 @@ namespace PulsooximeterApp.ViewModels
         {
             try
             {
-                DependencyService.Get<IBth>().Connect(SelectedBthDevice);
+                if (DependencyService.Get<IBth>().ConnectedDevice()!=SelectedBthDevice)
+                    DependencyService.Get<IBth>().Connect(SelectedBthDevice);
             }
             catch (Exception ex)
             {

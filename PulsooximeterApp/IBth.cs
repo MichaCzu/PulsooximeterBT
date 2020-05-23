@@ -10,6 +10,7 @@ namespace PulsooximeterApp
         void Disconnect();
         void Connect(string name);
         bool IsConnected();
+        string ConnectedDevice();
         List<string> PairedDevices();
     }
 }

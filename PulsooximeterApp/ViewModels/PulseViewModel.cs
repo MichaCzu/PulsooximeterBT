@@ -65,7 +65,7 @@ namespace PulsooximeterApp.ViewModels
             }
             catch (Exception ex)
             {
-                ErrorString = "Nie połączono z urządzeniem..";
+                ErrorString = "Wystąpił problem z urządzeniem..";
                 OnPropertyChanged(nameof(ErrorString));
             }
 
