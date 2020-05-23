@@ -31,7 +31,7 @@
                Grid.Row="1"
                Grid.Column="1"
                d:Text="120 BPM"
-               Text="{Binding HeartRate, StringFormat='{0:F0} BPM'}"
+               Text="{Binding HeartRate, StringFormat='{0} BPM'}"
                HorizontalOptions="Start"
                VerticalOptions="Center" />
             <Label Grid.Row="2"
@@ -41,7 +41,7 @@
             <Label Grid.Row="2"
                Grid.Column="1"
                d:Text="98%"
-                   Text="{Binding SpO2, StringFormat='{0:F0}%'}"
+                   Text="{Binding SpO2, StringFormat='{0}%'}"
                HorizontalOptions="Start"
                VerticalOptions="Center" />
         </Grid>

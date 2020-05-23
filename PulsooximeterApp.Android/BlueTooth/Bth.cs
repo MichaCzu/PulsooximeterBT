@@ -116,13 +116,11 @@ namespace PulsooximeterApp.Droid.BlueTooth
                                         MessageToSend = null;
                                     }
 
-                                    if (buffer.Ready())
+                                    while(buffer.Ready())
                                     {
                                         // I read...
                                         char[] chr = new char[100];
-                                        await buffer.ReadAsync(chr);
-
-                                        LastReceivedData = new string(chr);
+                                        LastReceivedData = buffer.ReadLine();
                                     }
                                 }
                             }

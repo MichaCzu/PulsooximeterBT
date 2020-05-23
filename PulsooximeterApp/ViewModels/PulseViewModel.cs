@@ -26,8 +26,15 @@ namespace PulsooximeterApp.ViewModels
         {
             try
             {
-                var data = DependencyService.Get<IBth>().Read();
-                HeartRate = data;
+                var data = DependencyService.Get<IBth>().Read().Split(';');
+                if (data.Length == 2)
+                {
+                    HeartRate = data[0];
+                    SpO2 = data[1];
+
+                    OnPropertyChanges(nameof(HeartRate));
+                    OnPropertyChanges(nameof(SpO2));
+                }
             }
             catch (Exception ex)
             {
