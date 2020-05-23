@@ -36,6 +36,8 @@ namespace PulsooximeterApp.ViewModels
 
         public DevicesViewModel()
         {
+            SelectedBthDevice = DependencyService.Get<IBth>().
+
             SearchDevices = new Command(() =>
             {
                 GetPairedDevices();

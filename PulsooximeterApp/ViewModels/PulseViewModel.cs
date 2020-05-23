@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
@@ -15,36 +16,75 @@ namespace PulsooximeterApp.ViewModels
 
         public string HeartRate { get; set; } = "0";
         public string SpO2 { get; set; } = "0";
+        public string ErrorString { get; set; } = "";
+        bool isRunning = false;
 
         public PulseViewModel()
         {
-            Device.StartTimer(TimeSpan.FromSeconds(2), OnUpdateModel);
-
+            Start();
         }
 
         public bool OnUpdateModel()
         {
             try
             {
+                if (!DependencyService.Get<IBth>().IsConnected())
+                {
+                    ErrorString = "Nie połączono z urządzeniem..";
+                    HeartRate = "-";
+                    SpO2 = "-";
+                    OnPropertyChanged(nameof(ErrorString));
+                    OnPropertyChanged(nameof(HeartRate));
+                    OnPropertyChanged(nameof(SpO2));
+                    return true;
+                }
+                else
+                {
+                    ErrorString = "";
+                    OnPropertyChanged(nameof(ErrorString));
+                }
+
                 var data = DependencyService.Get<IBth>().Read().Split(';');
                 if (data.Length == 2)
                 {
-                    HeartRate = data[0];
-                    SpO2 = data[1];
+                    if (Double.Parse(data[0], new CultureInfo("en-US")) > 30.0)
+                    {
+                        HeartRate = data[0];
+                        SpO2 = data[1];
+                    } else {
+                        ErrorString = "Przyłóż palec do czytnika";
+                        OnPropertyChanged(nameof(ErrorString));
 
-                    OnPropertyChanges(nameof(HeartRate));
-                    OnPropertyChanges(nameof(SpO2));
+                        HeartRate = "-";
+                        SpO2 = "-";
+                    }
+
+                    OnPropertyChanged(nameof(HeartRate));
+                    OnPropertyChanged(nameof(SpO2));
                 }
             }
             catch (Exception ex)
             {
-                Application.Current.MainPage.DisplayAlert("Attention", ex.Message, "Ok");
+                ErrorString = "Nie połączono z urządzeniem..";
+                OnPropertyChanged(nameof(ErrorString));
             }
 
-            return true;
+            return isRunning;
+        }
+        public void Start()
+        {
+            if(isRunning == false)
+            {
+                Device.StartTimer(TimeSpan.FromSeconds(1), OnUpdateModel);
+                isRunning = true;
+            }
+        }
+        public void Stop()
+        {
+            isRunning = false;
         }
 
-        protected void OnPropertyChanges(string propertyName)
+        protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
