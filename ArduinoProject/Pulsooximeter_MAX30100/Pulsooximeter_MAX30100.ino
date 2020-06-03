@@ -8,11 +8,19 @@ float tetno, saturacja;
 uint32_t poprzedniOdczyt = 0;
 PulseOximeter max30100;
 
+void onBeatDetected()
+{
+    Serial.println("beat");
+    BTSerial.println("beat");
+}
+
 void setup() {
   max30100.begin();
   max30100.setIRLedCurrent(MAX30100_LED_CURR_14_2MA);
   Serial.begin(9600);
   BTSerial.begin(57600);
+
+  max30100.setOnBeatDetectedCallback(onBeatDetected);
 }
 
 void loop() {
