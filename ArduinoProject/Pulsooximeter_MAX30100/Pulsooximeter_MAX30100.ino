@@ -10,7 +10,7 @@ PulseOximeter max30100;
 
 void setup() {
   max30100.begin();
-  max30100.setIRLedCurrent(MAX30100_LED_CURR_11MA);
+  max30100.setIRLedCurrent(MAX30100_LED_CURR_14_2MA);
   Serial.begin(9600);
   BTSerial.begin(57600);
 }
