@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:PulsooximeterApp;assembly=PulsooximeterApp"
              xmlns:model="clr-namespace:PulsooximeterApp.ViewModels"
+             xmlns:behaviors="clr-namespace:PulsooximeterApp"
              mc:Ignorable="d"
              x:Class="PulsooximeterApp.Views.PulsePage"
              Title="Detail">
@@ -19,7 +20,21 @@
         <model:PulseViewModel />
     </ContentPage.BindingContext>
     <StackLayout Padding="10">
-        <Image Source="{local:ImageResource PulsooximeterApp.ic_heart.png}"/>
+        <Image Source="{local:ImageResource PulsooximeterApp.ic_heart.png}">
+            <Image.Triggers>
+                <DataTrigger TargetType="Image"  Binding="{Binding Beat}" Value="True">
+                    <DataTrigger.EnterActions>
+                        <behaviors:PulseTrigger Action="Beat" />
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+                <DataTrigger TargetType="Image"  Binding="{Binding Beat}" Value="False">
+                    <DataTrigger.EnterActions>
+                        <behaviors:PulseTrigger Action="Beat" />
+                    </DataTrigger.EnterActions>
+                </DataTrigger>
+            </Image.Triggers>
+        </Image>
+
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1.5*" />

@@ -14,10 +14,12 @@ namespace PulsooximeterApp.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string HeartRate { get; set; } = "0";
-        public string SpO2 { get; set; } = "0";
+        public string HeartRate { get; set; } = "-";
+        public string SpO2 { get; set; } = "-";
         public string ErrorString { get; set; } = "";
         bool isRunning = false;
+        bool _beat = false;
+        public bool Beat { get => _beat; set { _beat = value; } }
 
         public PulseViewModel()
         {
@@ -44,7 +46,17 @@ namespace PulsooximeterApp.ViewModels
                     OnPropertyChanged(nameof(ErrorString));
                 }
 
-                var data = DependencyService.Get<IBth>().Read().Split(';');
+                var rawdata = DependencyService.Get<IBth>().Read();
+
+                if (rawdata == "beat")
+                {
+                    Console.WriteLine("Beat!");
+                    Beat = !Beat;
+                    OnPropertyChanged(nameof(Beat));
+                }
+
+                var data = rawdata.Split(';');
+
                 if (data.Length == 2)
                 {
                     if (Double.Parse(data[0], new CultureInfo("en-US")) > 30.0)
