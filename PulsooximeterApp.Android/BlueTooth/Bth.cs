@@ -123,7 +123,7 @@ namespace PulsooximeterApp.Droid.BlueTooth
                                         MessageToSend = null;
                                     }
 
-                                    while(buffer.Ready())
+                                    while (buffer.Ready())
                                     {
                                         // I read...
                                         char[] chr = new char[100];

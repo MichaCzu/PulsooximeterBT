@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 
 namespace PulsooximeterApp
-{ 
+{
     public interface IBth
     {
         void AttachDelegate(System.EventHandler<string> onReceive);

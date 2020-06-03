@@ -82,8 +82,8 @@ namespace PulsooximeterApp.ViewModels
                         {
                             DataBuffer.RemoveAt(0);
                         }
-                    } 
-                    catch(Exception e)
+                    }
+                    catch (Exception e)
                     {
 
                     }
@@ -116,7 +116,7 @@ namespace PulsooximeterApp.ViewModels
         }
         public void Start()
         {
-            if(isRunning == false)
+            if (isRunning == false)
             {
                 Device.StartTimer(TimeSpan.FromSeconds(2), OnUpdateModel);
                 isRunning = true;

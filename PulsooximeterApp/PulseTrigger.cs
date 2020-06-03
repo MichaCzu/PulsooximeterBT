@@ -7,19 +7,19 @@ using Xamarin.Forms;
 
 namespace PulsooximeterApp
 {
-            public class PulseTrigger : TriggerAction<Image>
-        {
-            public AnimationAction Action { get; set; }
-            public enum AnimationAction
-            { Beat }
+    public class PulseTrigger : TriggerAction<Image>
+    {
+        public AnimationAction Action { get; set; }
+        public enum AnimationAction
+        { Beat }
 
-            protected override async void Invoke(Image sender)
+        protected override async void Invoke(Image sender)
+        {
+            if (sender != null)
             {
-                if (sender != null)
-                {
-                    await Pulse(sender);
-                }
+                await Pulse(sender);
             }
+        }
 
         private async Task Pulse(Image targetImage)
         {
