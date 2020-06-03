@@ -2,7 +2,7 @@
 #include "MAX30100_PulseOximeter.h"
 #include <SoftwareSerial.h>
 
-#define OKRES_WYSWIETLANIA 200
+#define OKRES_WYSWIETLANIA 1000
 SoftwareSerial BTSerial(10, 11); // RX, TX
 float tetno, saturacja;
 uint32_t poprzedniOdczyt = 0;
