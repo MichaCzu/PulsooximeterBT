@@ -23,9 +23,9 @@ namespace PulsooximeterApp
 
         private async Task Pulse(Image targetImage)
         {
-            await targetImage.ScaleTo(1.2, 100, Easing.BounceOut);
+            await targetImage.ScaleTo(1.2, 150, Easing.BounceOut);
 
-            await targetImage.ScaleTo(1, 200, Easing.BounceIn);
+            await targetImage.ScaleTo(1, 300, Easing.BounceOut);
         }
     }
 

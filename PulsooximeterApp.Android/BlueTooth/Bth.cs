@@ -17,6 +17,7 @@ namespace PulsooximeterApp.Droid.BlueTooth
     class Bth : IBth
     {
         private CancellationTokenSource _ct { get; set; }
+        private EventHandler<string> onReceive;
 
         public string MessageToSend { get; set; }
         public string LastReceivedData { get; set; }
@@ -50,10 +51,9 @@ namespace PulsooximeterApp.Droid.BlueTooth
                 MessageToSend = message;
         }
 
-        public string Read()
+        public void AttachDelegate(System.EventHandler<string> Deleg)
         {
-
-            return LastReceivedData;
+            onReceive += Deleg;
         }
 
         private async Task ConnectDevice(string name)
@@ -128,6 +128,7 @@ namespace PulsooximeterApp.Droid.BlueTooth
                                         // I read...
                                         char[] chr = new char[100];
                                         LastReceivedData = buffer.ReadLine();
+                                        onReceive?.Invoke(this, LastReceivedData);
                                     }
                                 }
                             }

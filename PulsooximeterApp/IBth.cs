@@ -5,8 +5,8 @@ namespace PulsooximeterApp
 { 
     public interface IBth
     {
+        void AttachDelegate(System.EventHandler<string> onReceive);
         void Send(string message);
-        string Read();
         void Disconnect();
         void Connect(string name);
         bool IsConnected();

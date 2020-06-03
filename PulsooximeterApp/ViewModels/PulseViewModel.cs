@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
@@ -15,15 +16,19 @@ namespace PulsooximeterApp.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string HeartRate { get; set; } = "-";
-        public string SpO2 { get; set; } = "-";
+        public string SpO2 { get; set; } = "- ";
         public string ErrorString { get; set; } = "";
         bool isRunning = false;
-        bool _beat = false;
+        bool _beat;
         public bool Beat { get => _beat; set { _beat = value; } }
+
+        List<double> DataBuffer { get; set; }
 
         public PulseViewModel()
         {
             Start();
+            DependencyService.Get<IBth>().AttachDelegate(OnReceive);
+            DataBuffer = new List<double>();
         }
 
         public bool OnUpdateModel()
@@ -40,40 +45,6 @@ namespace PulsooximeterApp.ViewModels
                     OnPropertyChanged(nameof(SpO2));
                     return true;
                 }
-                else
-                {
-                    ErrorString = "";
-                    OnPropertyChanged(nameof(ErrorString));
-                }
-
-                var rawdata = DependencyService.Get<IBth>().Read();
-
-                if (rawdata == "beat")
-                {
-                    Console.WriteLine("Beat!");
-                    Beat = !Beat;
-                    OnPropertyChanged(nameof(Beat));
-                }
-
-                var data = rawdata.Split(';');
-
-                if (data.Length == 2)
-                {
-                    if (Double.Parse(data[0], new CultureInfo("en-US")) > 30.0)
-                    {
-                        HeartRate = data[0];
-                        SpO2 = data[1];
-                    } else {
-                        ErrorString = "Przyłóż palec do czytnika";
-                        OnPropertyChanged(nameof(ErrorString));
-
-                        HeartRate = "-";
-                        SpO2 = "-";
-                    }
-
-                    OnPropertyChanged(nameof(HeartRate));
-                    OnPropertyChanged(nameof(SpO2));
-                }
             }
             catch (Exception ex)
             {
@@ -83,14 +54,75 @@ namespace PulsooximeterApp.ViewModels
 
             return isRunning;
         }
+
+        public void OnReceive(object Sender, string receiveddata)
+        {
+            var rawdata = (string)receiveddata;
+            var data = rawdata.Split(';');
+
+            ErrorString = "";
+
+            if (rawdata == "beat")
+            {
+                Console.WriteLine("Beat!");
+                Beat = !Beat;
+                OnPropertyChanged(nameof(Beat));
+            }
+            else if (data.Length == 2)
+            {
+
+                double hrvalue = Double.Parse(data[0], new CultureInfo("en-US"));
+                if (hrvalue > 30.0)
+                {
+                    try
+                    {
+                        DataBuffer.Add(hrvalue);
+
+                        if (DataBuffer.Count > 8)
+                        {
+                            DataBuffer.RemoveAt(0);
+                        }
+                    } 
+                    catch(Exception e)
+                    {
+
+                    }
+                }
+                else
+                {
+                    if (Double.Parse(data[1], new CultureInfo("en-US")) == 0)
+                    {
+                        DataBuffer.Clear();
+                        ErrorString = "Przyłóż palec do czytnika";
+                    }
+                }
+
+                if (DataBuffer.Count > 3)
+                {
+                    double DataPrepare = (DataBuffer.Sum() - DataBuffer.Max() - DataBuffer.Min()) / (DataBuffer.Count - 2);
+                    HeartRate = String.Format("{0:f0}", DataPrepare);
+                    SpO2 = String.Format("{0:f0}", data[1]);
+                }
+                else
+                {
+                    HeartRate = "-";
+                    SpO2 = "- ";
+                }
+
+                OnPropertyChanged(nameof(HeartRate));
+                OnPropertyChanged(nameof(SpO2));
+                OnPropertyChanged(nameof(ErrorString));
+            }
+        }
         public void Start()
         {
             if(isRunning == false)
             {
-                Device.StartTimer(TimeSpan.FromSeconds(1), OnUpdateModel);
+                Device.StartTimer(TimeSpan.FromSeconds(2), OnUpdateModel);
                 isRunning = true;
             }
         }
+
         public void Stop()
         {
             isRunning = false;
